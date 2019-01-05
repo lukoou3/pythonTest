@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>百度离线版2.0DEMO</title>
+<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=3.0&ak=E4805d16520de693a3fe707cdc962045&services=&t=20180529182003"></script>
+</head>
+<body>
+<div  id="container"></div>
+</body>
+</html>
+<script type="text/javascript">
+    var feature = [{
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#044062ff"
+                    }
+          },
+          {
+                    "featureType": "land",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#081734ff"
+                    }
+          },
+          {
+                    "featureType": "boundary",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#064f85"
+                    }
+          },
+          {
+                    "featureType": "manmade",
+                    "elementType": "all",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "boundary",
+                    "elementType": "geometry.fill",
+                    "stylers": {
+                              "color": "#029fd4"
+                    }
+          },
+          {
+                    "featureType": "building",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#1a5787"
+                    }
+          },
+          {
+                    "featureType": "label",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                              "color": "#000000ff",
+                              "visibility": "on"
+                    }
+          },
+          {
+                    "featureType": "poi",
+                    "elementType": "labels.text.stroke",
+                    "stylers": {
+                              "color": "#1e1c1c"
+                    }
+          },
+          {
+                    "featureType": "highway",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#015e97ff"
+                    }
+          },
+          {
+                    "featureType": "green",
+                    "elementType": "all",
+                    "stylers": {
+                              "color": "#293324ff"
+                    }
+          },
+          {
+                    "featureType": "arterial",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#003152ff"
+                    }
+          },
+          {
+                    "featureType": "poilabel",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                              "color": "#000000ff"
+                    }
+          },
+          {
+                    "featureType": "poilabel",
+                    "elementType": "labels.text.stroke",
+                    "stylers": {
+                              "color": "#f3f3f3ff"
+                    }
+          },
+          {
+                    "featureType": "subway",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "local",
+                    "elementType": "geometry",
+                    "stylers": {
+                              "color": "#053a66ff"
+                    }
+          },
+          {
+                    "featureType": "subway",
+                    "elementType": "labels.icon",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          },
+          {
+                    "featureType": "railway",
+                    "elementType": "all",
+                    "stylers": {
+                              "visibility": "off"
+                    }
+          }];
+
+    var  privinces = [{type:1,type2:1,name:"北京市"}, {type:1,type2:1,name:"天津市"}, {type:1,type2:0,name:"上海市"}, {type:1,type2:1,name:"重庆市"}, {type:1,type2:0,name:"河北省"}, {type:1,type2:0,name:"山西省"}, {type:1,type2:0,name:"辽宁省"}, {type:1,type2:0,name:"吉林省"}, {type:1,type2:0,name:"黑龙江省"}, {type:1,type2:0,name:"江苏省"}, {type:1,type2:0,name:"浙江省"}, {type:1,type2:0,name:"安徽省"}, {type:1,type2:0,name:"福建省"}, {type:1,type2:0,name:"江西省"}, {type:1,type2:0,name:"山东省"}, {type:1,type2:0,name:"河南省"}, {type:1,type2:0,name:"湖北省"}, {type:1,type2:0,name:"湖南省"}, {type:1,type2:0,name:"广东省"}, {type:1,type2:0,name:"海南省"}, {type:1,type2:0,name:"四川省"}, {type:1,type2:0,name:"贵州省"}, {type:1,type2:0,name:"云南省"}, {type:1,type2:0,name:"陕西省"}, {type:1,type2:0,name:"甘肃省"}, {type:1,type2:0,name:"青海省"}, {type:1,type2:0,name:"台湾省"}, {type:1,type2:0,name:"内蒙古自治区"}, {type:1,type2:0,name:"广西壮族自治区"}, {type:1,type2:0,name:"西藏自治区"}, {type:1,type2:0,name:"宁夏回族自治区"}, {type:1,type2:0,name:"新疆维吾尔自治区"}, {type:1,type2:1,name:"香港特别行政区"}, {type:1,type2:1,name:"澳门特别行政区"}];
+    privinces[32].name="香港";
+    privinces[33].name="澳门";
+
+    for(var i=0;i<privinces.length;i++)
+    {
+        (function readxy(map)
+        {
+            new BMap.Boundary().get(map.name,function(rs){
+                //console.log(rs);
+                if(rs.boundaries[0])
+                    getrange(rs.boundaries,map);
+                else
+                    console.log(map.name);
+                map.load = true;
+            });
+        })(privinces[i]);
+    }
+
+    setTimeout(function vvv(){
+        for(var i=0;i<privinces.length;i++)
+        {
+            if(!privinces[i].load)
+            {
+                console.log("wait");
+                setTimeout(vvv,10000);
+                return;
+            }
+        }
+        privinces[32].name="香港特别行政区";
+        privinces[33].name="澳门特别行政区";
+        var str = "[";
+        for(var i=0;i<privinces.length;i++)
+        {
+            var map = privinces[i];
+            if(i==0)
+            {
+                str = str + "{type:"+map.type+",type2:"+map.type2+",name:\""+map.name+"\",minX:"+
+                map.minX +",maxX:"+map.maxX +",minY:"+map.minY +",maxY:"+
+                map.maxY +"}";
+            }
+            else
+            {
+                str = str + ", {type:"+map.type+",type2:"+map.type2+",name:\""+map.name+"\",minX:"+
+                map.minX +",maxX:"+map.maxX +",minY:"+map.minY +",maxY:"+
+                map.maxY +"}";
+            }
+        }
+        console.log(str+"]")
+
+    },10000);
+
+
+    function getrange(boundaries,map){
+        var minX = 0,maxX = 0,minY = 0,maxY = 0,array;
+        for(var i=0;i<boundaries.length;i++)
+        {
+            array = boundaries[i].split(";");
+
+            for(var i=0;i<array.length;i++)
+            {
+                var array1 =   array[i].split(/\s*[,]\s*/)
+                var org = {lng:parseFloat(array1[0]),lat:parseFloat(array1[1])};
+                if(minX == 0)
+                {
+                    minX = org.lng;
+                    maxX = org.lng;
+                    minY = org.lat;
+                    maxY = org.lat;
+                }
+                else
+                {
+                    if(org.lng < minX)
+                    {
+                        minX = org.lng;
+                    }
+                    else if(org.lng > maxX)
+                    {
+                        maxX = org.lng;
+                    }
+
+                    if(org.lat < minY)
+                    {
+                        minY = org.lat;
+                    }
+                    else if(org.lat > maxY)
+                    {
+                        maxY = org.lat;
+                    }
+                }
+            }
+        }
+
+
+        map.minX=minX;
+        map.maxX=maxX;
+        map.minY=minY;
+        map.maxY=maxY;
+
+        //console.log(""+minX+","+maxX+"--"+minY+","+maxY+"");
+    }
+
+
+
+</script>
+<script>
+    var result = [{type:1,type2:1,name:"北京市",minX:115.430651,maxX:117.51999,minY:39.448725,maxY:41.066947}, {type:1,type2:1,name:"天津市",minX:113.70602,maxX:113.799592,minY:36.596102,maxY:36.654221}, {type:1,type2:0,name:"上海市",minX:120.863182,maxX:122.029708,minY:30.661087,maxY:31.879719}, {type:1,type2:1,name:"重庆市",minX:105.295278,maxX:110.205735,minY:28.166309,maxY:32.207146}, {type:1,type2:0,name:"河北省",minX:117.526542,maxX:117.789527,minY:39.320475,maxY:39.42567}, {type:1,type2:0,name:"山西省",minX:110.24059,maxX:114.567743,minY:34.590534,maxY:40.749611}, {type:1,type2:0,name:"辽宁省",minX:118.85207,maxX:125.795742,minY:38.246372,maxY:43.498242}, {type:1,type2:0,name:"吉林省",minX:121.647296,maxX:131.325516,minY:40.866848,maxY:46.308511}, {type:1,type2:0,name:"黑龙江省",minX:121.188825,maxX:135.10281,minY:43.427888,maxY:53.570325}, {type:1,type2:0,name:"江苏省",minX:118.851296,maxX:118.875816,minY:31.508225,maxY:31.531734}, {type:1,type2:0,name:"浙江省",minX:118.033657,maxX:122.999731,minY:27.010507,maxY:31.185007}, {type:1,type2:0,name:"安徽省",minX:114.887801,maxX:119.654666,minY:29.399409,maxY:34.656835}, {type:1,type2:0,name:"福建省",minX:115.85883,maxX:120.756887,minY:23.554231,maxY:28.318613}, {type:1,type2:0,name:"江西省",minX:113.585886,maxX:118.492789,minY:24.491957,maxY:30.080458}, {type:1,type2:0,name:"山东省",minX:114.828462,maxX:122.733348,minY:34.383719,maxY:38.664159}, {type:1,type2:0,name:"河南省",minX:110.365188,maxX:116.655478,minY:31.388613,maxY:36.372358}, {type:1,type2:0,name:"湖北省",minX:108.372327,maxX:116.141487,minY:29.035723,maxY:33.277027}, {type:1,type2:0,name:"湖南省",minX:108.796251,maxX:114.266566,minY:24.642281,maxY:30.132171}, {type:1,type2:0,name:"广东省",minX:109.642194,maxX:117.366654,minY:20.123355,maxY:25.522669}, {type:1,type2:0,name:"海南省",minX:109.90371,maxX:117.433508,minY:6.262177,maxY:11.564868}, {type:1,type2:0,name:"四川省",minX:106.080951,maxX:106.09624,minY:32.766514,maxY:32.780625}, {type:1,type2:0,name:"贵州省",minX:109.534704,maxX:109.601305,minY:26.724086,maxY:26.778527}, {type:1,type2:0,name:"云南省",minX:97.513921,maxX:106.205371,minY:21.155465,maxY:29.254691}, {type:1,type2:0,name:"陕西省",minX:105.496811,maxX:111.251173,minY:31.710756,maxY:39.592466}, {type:1,type2:0,name:"甘肃省",minX:92.460227,maxX:108.720309,minY:32.600276,maxY:42.801897}, {type:1,type2:0,name:"青海省",minX:89.431788,maxX:103.078821,minY:31.546147,maxY:39.216911}, {type:1,type2:0,name:"台湾省",minX:119.268804,maxX:119.758632,minY:23.163397,maxY:23.808251}, {type:1,type2:0,name:"内蒙古自治区",minX:97.363425,maxX:125.342687,minY:37.405634,maxY:53.339857}, {type:1,type2:0,name:"广西壮族自治区",minX:104.456352,maxX:112.067192,minY:20.87359,maxY:26.391437}, {type:1,type2:0,name:"西藏自治区",minX:78.408211,maxX:99.117053,minY:26.859666,maxY:36.496533}, {type:1,type2:0,name:"宁夏回族自治区",minX:105.895448,maxX:106.064051,minY:35.417621,maxY:35.495348}, {type:1,type2:0,name:"新疆维吾尔自治区",minX:73.507843,maxX:96.391202,minY:34.338958,maxY:49.18903}, {type:1,type2:1,name:"香港特别行政区",minX:113.8264,maxX:114.515156,minY:22.136176,maxY:22.568561}, {type:1,type2:1,name:"澳门特别行政区",minX:113.538663,maxX:113.60975,minY:22.109448,maxY:22.220023}];
+</script>
