@@ -51,7 +51,9 @@ function sendMsg() {
     //connect.sendMessageFromJS({"msg":msg})
     connect.sendMessageFromJS(JSON.stringify({"msg":msg}))
     connect.publicFunction([msg,1])
-    input.value = connect.publicFun();
+    connect.publicFun(msg,function(data){
+        input.value = data;
+    });
 }
 </script>
 <body>

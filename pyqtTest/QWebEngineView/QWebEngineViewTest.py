@@ -58,10 +58,11 @@ class JsConnect(QObject):
         print('sendMessageFromJS2:{}'.format(msg[0]))
         return msg[0]
 
-    @pyqtSlot(result=str)
-    def publicFun(self,):
-        print('sendMessageFromJS3')
-        return "ssss"
+    @pyqtSlot(str,result=list)
+    def publicFun(self,msg):
+        print('sendMessageFromJS3{}'.format(msg))
+        #return "ssss"
+        return ["ssss",1,"344"]
 
 class Ui_Main(QtWidgets.QWidget,Ui_Form):
     def __init__(self,*args, **kwargs):
