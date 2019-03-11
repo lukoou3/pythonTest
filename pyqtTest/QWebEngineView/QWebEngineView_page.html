@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script type="text/javascript" src="qwebchannel.js"></script>
+<style type="text/css">
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    html {
+        height: 98%;
+        width: 100%;
+    }
+    #input {
+        width: 98%;
+    }
+    #send {
+        width: 98px;
+        margin:5px;
+    }
+    #output {
+        width: 98%;
+        height: 405px;
+    }
+</style>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function () {
+    new QWebChannel( qt.webChannelTransport, function(channel) {
+        var input = document.getElementById("input");
+        input.value = 11;
+        window.connect = channel.objects.connect;
+
+        ////Web connect the Qt signal, then Qt can call callback function
+        connect.signalToJS.connect(function(msg){
+            var output = document.getElementById("output");
+            output.innerHTML = output.innerHTML + msg + "\n";
+        });
+    });
+});
+
+function receiveMsg(msg) {
+    var output = document.getElementById("output");
+    output.innerHTML = output.innerHTML + msg + "\n";
+}
+function sendMsg() {
+    var input = document.getElementById("input");
+    var msg = input.value;
+    //connect.sendMessageFromJS({"msg":msg})
+    connect.sendMessageFromJS(JSON.stringify({"msg":msg}))
+    connect.publicFunction([msg,1])
+    input.value = connect.publicFun();
+}
+</script>
+<body>
+    <textarea id="output" readonly="readonly"></textarea><br />
+    <input id="input" />
+    <input type="submit" id="send" value="发送" onclick="sendMsg();" />
+</body>
+</html>
