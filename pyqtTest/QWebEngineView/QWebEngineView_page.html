@@ -48,7 +48,6 @@ function receiveMsg(msg) {
 function sendMsg() {
     var input = document.getElementById("input");
     var msg = input.value;
-    //connect.sendMessageFromJS({"msg":msg})
     connect.sendMessageFromJS(JSON.stringify({"msg":msg}))
     connect.publicFunction([msg,1])
     connect.publicFun(msg,function(data){

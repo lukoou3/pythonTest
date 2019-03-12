@@ -21,11 +21,14 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.label)
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setObjectName("pushButton")
+        self.pushButton1 = QtWidgets.QPushButton(Form)
+        self.pushButton1.setObjectName("pushButton1")
         self.lineEdit = QtWidgets.QLineEdit(Form)
         self.lineEdit.setMinimumSize(QtCore.QSize(80, 0))
         self.lineEdit.setObjectName("lineEdit")
         self.verticalLayout.addWidget(self.lineEdit)
         self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.pushButton1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.webView = QWebEngineView(Form)
         #self.webView.setUrl(QtCore.QUrl("about:blank"))
@@ -39,7 +42,8 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "web"))
-        self.pushButton.setText(_translate("Form", "发送"))
+        self.pushButton.setText(_translate("Form", "发送(run js)"))
+        self.pushButton1.setText(_translate("Form", "发送(信号槽)"))
 
 class JsConnect(QObject):
     signalFromJS = pyqtSignal(dict)
@@ -87,8 +91,8 @@ class Ui_Main(QtWidgets.QWidget,Ui_Form):
                 html = fp.read()
                 self.webView.setHtml(html)
 
-        #self.pushButton.clicked.connect(self.sendMessageToJS)
-        self.pushButton.clicked.connect(self.sendMessageByRunJavaScript)
+        self.pushButton.clicked.connect(self.sendMessageToJS)
+        self.pushButton1.clicked.connect(self.sendMessageByRunJavaScript)
 
     def aa(self):
         if True:
@@ -100,8 +104,8 @@ class Ui_Main(QtWidgets.QWidget,Ui_Form):
                 html = fp.read()
                 self.webView.setHtml(html)
 
-        # self.pushButton.clicked.connect(self.sendMessageToJS)
-        self.pushButton.clicked.connect(self.sendMessageByRunJavaScript)
+        self.pushButton.clicked.connect(self.sendMessageToJS)
+        self.pushButton1.clicked.connect(self.sendMessageByRunJavaScript)
 
     def sendMessageToJS(self):
         msg = self.lineEdit.text()
@@ -140,6 +144,7 @@ if __name__ == "__main__":
                 widget.webView.setHtml(html)
 
         widget.pushButton.clicked.connect(widget.sendMessageToJS)
+        widget.pushButton1.clicked.connect(widget.sendMessageByRunJavaScript)
     else:
         widget.aa()
 
