@@ -97,8 +97,8 @@ class Ui_Main(QtWidgets.QWidget,Ui_Form):
     def aa(self):
         if True:
             print("file:///{}".format(os.path.abspath("QWebEngineView_page.html")))
-            self.webView.load(
-                QUrl("file:///D:/pycharmWork/pythonTest/pyqtTest/QWebEngineView/QWebEngineView_page.html"))
+            #self.webView.load(QUrl("file:///D:/pycharmWork/pythonTest/pyqtTest/QWebEngineView/QWebEngineView_page.html"))
+            self.webView.setUrl(QUrl.fromLocalFile(os.path.abspath("QWebEngineView_page.html")))
         else:
             with open("./QWebEngineView_page.html") as fp:
                 html = fp.read()
